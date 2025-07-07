@@ -1,0 +1,17 @@
+Package: datacleanR
+Type: Package
+Title: Simple Data Cleaning Tools
+Version: 0.1.0
+Authors@R: c(
+    person(
+      "Hyein", "Jeong",
+      email = "panda990115@gmail.com",
+      role = c("aut", "cre")
+    )
+  )
+Description: Provides functions for replacing zeros with NAs, standardizing
+    variables, imputing missing values, and removing outliers in numeric data.
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
