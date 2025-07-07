@@ -71,25 +71,20 @@ f)  The `DESCRIPTION` file of your package should be properly formatted
 
 ### Submission
 
-#### a)  
-Briefly describe in one - two sentences what your R package does and why you decided to choose this functionality. This is just intended to give us some context to better understand the package.
+#### a)  Brief description of the package
 
 This package is called ***datacleanR**. It provides functions to replace zeros with NAs, standardize numeric data, impute missing values, and remove outliers using the IQR method. I decided to build this package because these are common preprocessing steps I need for many data analysis tasks.
 
-b)  To make installation easier, your R package should be in a public
-    repository on GitHub. Provide the URL to the GitHub repository
-    below:
+####b)  GitHub Repository URL
 
-e.g. `https://github.com/Heynii/datacleanR`
+Repository: `https://github.com/Heynii/datacleanR`
 
-c)  Your R package should be installable via
-    `remotes::install_github()`. Before submitting your solution to this
-    exercise sheet please test whether you can install your R package
-    from GitHub. Provide the command below:
+#### c)  Installation command
 
 ```{r}
 remotes::install_github("Heynii/datacleanR")
 ```
+
 
 ### datacleanR Package Code
 
@@ -194,4 +189,6 @@ After writing or editing the roxygen documentation in each function, I will run 
 ```{r}
 devtools::document()
 ```
+
+
 
