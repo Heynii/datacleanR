@@ -1,0 +1,197 @@
+---
+title: "Exercise #6"
+subtitle: "Fortgeschrittene Statistische Software für NF"
+author: "Hyein Jeong (12449353)"
+date: "`r Sys.Date()`"
+output: distill::distill_article
+---
+
+## General Remarks
+
+-   You can submit your solutions in teams of up to 3 students.
+-   Include all your team-member's names and student numbers
+    (Martrikelnummern) in the `authors` field.
+-   Please use the exercise template document to work on and submit your
+    results.
+-   Use a level 2 heading for each new exercise and answer each subtask
+    next to it's bullet point or use a new level 3 heading if you want.
+-   Always render the R code for your solutions and make sure to include
+    the resulting data in your rendered document.
+    -   Make sure to not print more than 10 rows of data (unless
+        specifically instructed to).
+-   Always submit both the rendered document(s) as well as your source
+    Rmarkdown document. Submit the files separately on moodle, **not**
+    as a zip archive.
+-   Make sure to submit you render your Rmarkdown as
+    `distill:distill_article` and check the final output regarding any
+    issues in formatting. Formatting errors may lead to point
+    deductions.
+
+## Exercise 1: Building an R package (20 Points)
+
+For this exercise we ask you to build an R package. We do not ask you to
+build any particular R package, but leave the choice of what your R
+package will do up to you, to keep it more interesting for you.
+
+Instead of having particular tasks for you to complete, we have a list
+of requirements for your final R package and submission. Please submit
+an Rmd and render it as always, although you will only have to provide
+the short information asked for under *Submission*.
+
+We advise you to start early with this exercise sheet and encourage you
+to reach out if you encounter issues during the creation of your
+package. For detailed information on all aspects of creating an R
+package, we highlight again, the [great book on R
+packages](https://r-pkgs.org/) by Hadley Wickham.
+
+We look forward to seeing the cool packages you come up with and thank
+you for participating in the course!
+
+### Functionality
+
+a)  Create a working R package that performs the task it is intended to
+    do
+
+b)  Your R package needs to be installable (test this before submitting)
+
+c)  Your R package should contain at least 2 functions
+
+d)  The functions in your R package should be properly documented
+    according to the Roxygen convention. Each function should include an
+    `@example` tag.
+
+e)  The documentation for your package should be properly generated and
+    up-to-date. After every change to the Roxygen comments of your
+    functions, you will need to run `devtools::document()` again to do
+    this.
+
+f)  The `DESCRIPTION` file of your package should be properly formatted
+    and contain all the required dependencies of your package. It should
+    also provide an accurate `Title` and `Description` for your package.
+
+### Submission
+
+#### a)  
+Briefly describe in one - two sentences what your R package does and why you decided to choose this functionality. This is just intended to give us some context to better understand the package.
+
+This package is called ***datacleanR**. It provides functions to replace zeros with NAs, standardize numeric data, impute missing values, and remove outliers using the IQR method. I decided to build this package because these are common preprocessing steps I need for many data analysis tasks.
+
+b)  To make installation easier, your R package should be in a public
+    repository on GitHub. Provide the URL to the GitHub repository
+    below:
+
+e.g. `https://github.com/Heynii/datacleanR`
+
+c)  Your R package should be installable via
+    `remotes::install_github()`. Before submitting your solution to this
+    exercise sheet please test whether you can install your R package
+    from GitHub. Provide the command below:
+
+```{r}
+remotes::install_github("Heynii/datacleanR")
+```
+
+### datacleanR Package Code
+
+#### replace_zero_na
+
+``` r
+#' Replace zeros with NAs
+#'
+#' This function replaces all zeros in a numeric vector with NA values. 
+#' Useful for sensor data where zero means missing.
+#'
+#' @param x A numeric vector
+#' @return A numeric vector with zeros replaced by NAs
+#' @examples
+#' replace_zero_na(c(0, 1, 2, 0, 3))
+#'
+#' @export
+replace_zero_na <- function(x) {
+  # Functionality: replace 0 with NA
+  x[x == 0] <- NA
+  return(x)
+}
+```
+
+#### standardize
+
+``` r
+#' Standardize numeric vector
+#'
+#' @param x Numeric vector
+#' @return Standardized numeric vector (mean 0, sd 1)
+#' @examples
+#' standardize(c(1,2,3,4,5))
+#' @export
+standardize <- function(x) {
+  (x - mean(x, na.rm=TRUE)) / sd(x, na.rm=TRUE)
+}
+```
+
+#### impute_na
+
+``` r
+#' Impute missing values
+#'
+#' @param x Numeric vector
+#' @param method Method: "mean", "median" or numeric value
+#' @return Numeric vector with imputed values
+#' @examples
+#' impute_na(c(1,NA,3), method="mean")
+#' impute_na(c(1,NA,3), method=0)
+#' @export
+impute_na <- function(x, method="mean") {
+  if(method=="mean") {
+    val <- mean(x, na.rm=TRUE)
+  } else if(method=="median") {
+    val <- median(x, na.rm=TRUE)
+  } else if(is.numeric(method)) {
+    val <- method
+  } else {
+    stop("Invalid method")
+  }
+  x[is.na(x)] <- val
+  return(x)
+}
+```
+
+#### remove_outliers
+
+``` r
+#' Remove outliers with IQR
+#'
+#' @param x Numeric vector
+#' @return Numeric vector with outliers set to NA
+#' @examples
+#' remove_outliers(c(1,2,3,100))
+#' @export
+remove_outliers <- function(x) {
+  Q1 <- quantile(x,0.25,na.rm=TRUE)
+  Q3 <- quantile(x,0.75,na.rm=TRUE)
+  IQR <- Q3 - Q1
+  lower <- Q1 - 1.5*IQR
+  upper <- Q3 + 1.5*IQR
+  x[x < lower | x > upper] <- NA
+  return(x)
+}
+```
+
+### NAMESPACE
+
+```r
+export(replace_zero_na)
+export(standardize)
+export(impute_na)
+export(remove_outliers)
+```
+
+### Package development workflow
+
+After writing or editing the roxygen documentation in each function, I will run the following command to regenerate the help files and the NAMESPACE file:
+
+
+```{r}
+devtools::document()
+```
+
