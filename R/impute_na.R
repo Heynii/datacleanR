@@ -7,18 +7,21 @@
 #' impute_na(c(1,NA,3), method="mean")
 #' impute_na(c(1,NA,3), method=0)
 #' @export
-impute_na <- function(x, method="mean")
-  if (!is.numeric(x)) stop("Input must be numeric.")
+impute_na <- function(x, method = "mean") {
+  if (!is.numeric(x)) {
+    stop("Input must be numeric.")
+  }
 
-  if(method=="mean") {
-    val <- mean(x, na.rm=TRUE)
-  } else if(method=="median") {
-    val <- median(x, na.rm=TRUE)
-  } else if(is.numeric(method)) {
+  if (method == "mean") {
+    val <- mean(x, na.rm = TRUE)
+  } else if (method == "median") {
+    val <- median(x, na.rm = TRUE)
+  } else if (is.numeric(method)) {
     val <- method
   } else {
-    stop("Invalid method")
+    stop("Invalid method. Use 'mean', 'median', or a numeric value.")
   }
+
   x[is.na(x)] <- val
   return(x)
 }
