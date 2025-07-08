@@ -103,7 +103,7 @@ remotes::install_github("Heynii/datacleanR")
 #'
 #' @export
 replace_zero_na <- function(x) {
-  # Functionality: replace 0 with NA
+  if (!is.numeric(x)) stop("Input must be a numeric vector.")
   x[x == 0] <- NA
   return(x)
 }
@@ -120,7 +120,14 @@ replace_zero_na <- function(x) {
 #' standardize(c(1,2,3,4,5))
 #' @export
 standardize <- function(x) {
-  (x - mean(x, na.rm=TRUE)) / sd(x, na.rm=TRUE)
+  if (!is.numeric(x)) stop("Input must be numeric.")
+  
+  m <- mean(x, na.rm = TRUE)
+  s <- sd(x, na.rm = TRUE)
+  
+  if (s == 0) return(rep(0, length(x)))
+  
+  return((x - m) / s)
 }
 ```
 
@@ -137,6 +144,8 @@ standardize <- function(x) {
 #' impute_na(c(1,NA,3), method=0)
 #' @export
 impute_na <- function(x, method="mean") {
+  if (!is.numeric(x)) stop("Input must be numeric.")
+  
   if(method=="mean") {
     val <- mean(x, na.rm=TRUE)
   } else if(method=="median") {
@@ -146,6 +155,7 @@ impute_na <- function(x, method="mean") {
   } else {
     stop("Invalid method")
   }
+  
   x[is.na(x)] <- val
   return(x)
 }
@@ -162,11 +172,15 @@ impute_na <- function(x, method="mean") {
 #' remove_outliers(c(1,2,3,100))
 #' @export
 remove_outliers <- function(x) {
+  if (!is.numeric(x)) stop("Input must be numeric.")
+
   Q1 <- quantile(x,0.25,na.rm=TRUE)
   Q3 <- quantile(x,0.75,na.rm=TRUE)
   IQR <- Q3 - Q1
+  
   lower <- Q1 - 1.5*IQR
   upper <- Q3 + 1.5*IQR
+  
   x[x < lower | x > upper] <- NA
   return(x)
 }
