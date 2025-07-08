@@ -10,6 +10,8 @@
 #'
 #' @export
 replace_zero_na <- function(x) {
+  # Check input
+  if (!is.numeric(x)) stop("Input must be a numeric vector.")
   # Functionality: replace 0 with NA
   x[x == 0] <- NA
   return(x)

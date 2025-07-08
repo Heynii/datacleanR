@@ -6,5 +6,12 @@
 #' standardize(c(1,2,3,4,5))
 #' @export
 standardize <- function(x) {
-  (x - mean(x, na.rm=TRUE)) / sd(x, na.rm=TRUE)
+  if (!is.numeric(x)) stop("Input must be numeric.")
+
+  m <- mean(x, na.rm = TRUE)
+  s <- sd(x, na.rm = TRUE)
+
+  if (s == 0) return(rep(0, length(x)))
+
+  return((x - m) / s)
 }

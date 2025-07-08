@@ -7,7 +7,9 @@
 #' impute_na(c(1,NA,3), method="mean")
 #' impute_na(c(1,NA,3), method=0)
 #' @export
-impute_na <- function(x, method="mean") {
+impute_na <- function(x, method="mean")
+  if (!is.numeric(x)) stop("Input must be numeric.")
+
   if(method=="mean") {
     val <- mean(x, na.rm=TRUE)
   } else if(method=="median") {

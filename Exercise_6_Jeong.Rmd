@@ -75,7 +75,7 @@ f)  The `DESCRIPTION` file of your package should be properly formatted
 
 This package is called ***datacleanR**. It provides functions to replace zeros with NAs, standardize numeric data, impute missing values, and remove outliers using the IQR method. I decided to build this package because these are common preprocessing steps I need for many data analysis tasks.
 
-####b)  GitHub Repository URL
+#### b)  GitHub Repository URL
 
 Repository: `https://github.com/Heynii/datacleanR`
 
